@@ -1,26 +1,190 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Fonts */
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Background scale */
+  --color-bg-base: #09090E;
+  --color-bg-surface: #111118;
+  --color-bg-card: #16161F;
+  --color-bg-overlay: #1C1C28;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Border */
+  --color-border: #2A2A3A;
+  --color-border-subtle: #1E1E2E;
+  --color-border-strong: #3A3A50;
+
+  /* Text */
+  --color-text-primary: #F0F0F5;
+  --color-text-secondary: #A0A0B8;
+  --color-text-muted: #5A5A78;
+
+  /* Brand */
+  --color-violet: #7C3AED;
+  --color-violet-light: #A78BFA;
+  --color-violet-dark: #5B21B6;
+  --color-cyan: #06B6D4;
+  --color-cyan-light: #67E8F9;
+  --color-cyan-dark: #0891B2;
+
+  /* Status */
+  --color-emerald: #10B981;
+  --color-emerald-light: #6EE7B7;
+  --color-amber: #F59E0B;
+  --color-amber-light: #FCD34D;
+  --color-rose: #F43F5E;
+  --color-rose-light: #FDA4AF;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+  --shadow-card-hover: 0 4px 16px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,58,237,0.1);
+  --shadow-glow-violet: 0 0 20px rgba(124,58,237,0.3), 0 0 40px rgba(124,58,237,0.12);
+  --shadow-glow-cyan: 0 0 20px rgba(6,182,212,0.3), 0 0 40px rgba(6,182,212,0.12);
+
+  /* Animations */
+  --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
+  --animate-shimmer: shimmer 1.5s ease-in-out infinite;
+  --animate-fade-in: fade-in 0.5s ease-out forwards;
+  --animate-slide-up: slide-up 0.4s ease-out forwards;
+  --animate-connected: connected-ring 2s ease-out infinite;
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.75); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes connected-ring {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+    70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  }
+  @keyframes mesh-move {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(20px, -10px) scale(1.05); }
+    66% { transform: translate(-10px, 15px) scale(0.97); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
   }
 }
+
+:root {
+  --background: #09090E;
+  --foreground: #F0F0F5;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #111118; }
+::-webkit-scrollbar-thumb { background: #2A2A3A; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #3A3A50; }
+
+::selection { background: rgba(124,58,237,0.3); color: #F0F0F5; }
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(22, 22, 31, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Gradient border */
+.gradient-border { position: relative; }
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(124,58,237,0.5), rgba(6,182,212,0.5));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Status animations */
+.status-connected { animation: connected-ring 2s ease-out infinite; }
+
+/* Shimmer loading */
+.shimmer-bg {
+  background: linear-gradient(90deg, #16161F 25%, #1C1C28 50%, #16161F 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Subtle grid overlay */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(42,42,58,0.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(42,42,58,0.25) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Mesh background for auth page */
+.mesh-bg {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(124,58,237,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(6,182,212,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 85%, rgba(124,58,237,0.06) 0%, transparent 55%),
+    #09090E;
+}
+
+/* Animation helpers */
+.animate-fade-in { animation: fade-in 0.5s ease-out forwards; }
+.animate-slide-up { animation: slide-up 0.4s ease-out forwards; opacity: 0; }
+.animate-float { animation: float 4s ease-in-out infinite; }
+.animate-pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+
+/* Progress bar */
+.progress-fill {
+  background: linear-gradient(90deg, #7C3AED 0%, #06B6D4 100%);
+}
+
+/* Recharts overrides */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: #2A2A3A;
+  stroke-opacity: 0.5;
+}
+.recharts-tooltip-wrapper { outline: none; }
